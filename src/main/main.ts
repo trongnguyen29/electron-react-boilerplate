@@ -16,6 +16,8 @@ import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
 import MenuBuilder from './menu';
 import { resolveHtmlPath } from './util';
+import {readFile as fsReadFile} from 'fs-extra';
+import { PathLike } from 'fs';
 
 export default class AppUpdater {
   constructor() {
@@ -123,11 +125,18 @@ app.on('window-all-closed', () => {
     app.quit();
   }
 });
+const filePath = '/Users/trongnguyen/Code/markdown_react_electron1/CODE_OF_CONDUCT.md';
+const readFile = (file: PathLike) => {
+  fsReadFile(file, (err, data) => {
+    console.log(data.toString());
+  });
+};
 
 app
   .whenReady()
   .then(() => {
     createWindow();
+    readFile(filePath);
     app.on('activate', () => {
       // On macOS it's common to re-create a window in the app when the
       // dock icon is clicked and there are no other windows open.
@@ -135,3 +144,6 @@ app
     });
   })
   .catch(console.log);
+
+
+
